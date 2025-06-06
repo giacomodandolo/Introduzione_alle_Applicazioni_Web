@@ -27,17 +27,17 @@
                         {% if p_ticket %}
                             <article class="card rounded-3 bg-common h-100">
                                 <div class="col justify-content-center card-header">
-                                    {% if p_ticket.tipologia == 0 %} 
+                                    {% if p_ticket.type == 0 %} 
                                         <h3 class="my-2 pb-3 fw-normal text-primary border-bottom border-dark"> 
                                             Biglietto Singolo
                                         </h3>
-                                        <h5> {{ p_ticket.giorno_inizio.split(" ")[0] }} </h5>
-                                    {% elif p_ticket.tipologia == 1 %}
+                                        <h5> {{ p_ticket.start_date.split("T")[0] }} </h5>
+                                    {% elif p_ticket.type == 1 %}
                                         <h3 class="my-2 pb-3 fw-normal text-primary border-bottom border-dark"> 
                                             Biglietto Doppio
                                         </h3>
-                                        <h5> dal {{ p_ticket.giorno_inizio.split("T")[0] }}
-                                        al {{ p_data_fine.split("T")[0] }} </h5>
+                                        <h5> dal {{ p_ticket.start_date.split("T")[0] }}
+                                        al {{ p_end_date.split("T")[0] }} </h5>
                                     {% else %}
                                         <h3 class="my-2 pb-3 fw-normal text-primary border-bottom border-dark"> 
                                             Biglietto Platino
@@ -170,20 +170,20 @@
             <section class="album p-2">
                 <div class="row">
                     {% for performance in p_unpublished_performances %}
-                        <a href="{{ url_for('update_performance', artist_id=performance.id_artista) }}" class="col-lg-3 mb-3 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
+                        <a href="{{ url_for('update_performance', artist_id=performance.artist_id) }}" class="col-lg-3 mb-3 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
                             <article class="card rounded-4 bg-primary border-common">
-                                <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.nome }}">
+                                <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.name }}">
                                 <section class="card-body d-flex flex-column">
                                     <h5 class="card-title text-primary">{{ performance.artist_name }}</h5>
-                                    <p class="card-text mb-4 text-common">{{ performance.descrizione_breve }}</p>
+                                    <p class="card-text mb-4 text-common">{{ performance.short_description }}</p>
                                 </section>
                                 <section class="d-flex align-items-center m-3 mt-0">
-                                    <span class="badge me-1 bg-secondary text-black">{{ performance.inizio.split('T')[0] }}</span>
-                                    <span class="badge me-1 bg-tertiary text-black">{{ performance.inizio.split('T')[1] }} ({{ p_unpublished_durations[performance.id_artista] }})</span>
+                                    <span class="badge me-1 bg-secondary text-black">{{ performance.start_date.split('T')[0] }}</span>
+                                    <span class="badge me-1 bg-tertiary text-black">{{ performance.start_date.split('T')[1] }} ({{ p_unpublished_durations[performance.artist_id] }})</span>
                                 </section>
                                 <section class="d-flex align-items-center m-3 mt-0">
                                     <span class="badge me-1 bg-quaternary text-black">{{ performance.stage_name }}</span>
-                                    <span class="badge bg-quaternary text-black">{{ performance.genere_musicale }}</span>
+                                    <span class="badge bg-quaternary text-black">{{ performance.music_genre }}</span>
                                 </section>
                             </article>
                         </a>
@@ -199,20 +199,20 @@
             <section class="album p-2">
             <div class="row ">
                 {% for performance in p_published_performances %}
-                <a href="{{ url_for('artist', artist_id=performance.id_artista) }}" class="col-lg-3 mb-4 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
+                <a href="{{ url_for('artist', artist_id=performance.artist_id) }}" class="col-lg-3 mb-4 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
                     <article class="card rounded-4 bg-primary border-common mx-auto">
-                        <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.nome }}">
+                        <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.name }}">
                         <section class="card-body d-flex flex-column">
                             <h5 class="card-title text-primary">{{ performance.artist_name }}</h5>
-                            <p class="card-text text-common">{{ performance.descrizione_breve }}</p>
+                            <p class="card-text text-common">{{ performance.short_description }}</p>
                         </section>
                         <section class="row d-flex align-items-center m-3 my-0">
-                            <span class="badge me-1 mb-1 bg-secondary text-black col-12">{{ performance.inizio.split('T')[0] }}</span>
-                            <span class="badge me-1 mb-1 bg-tertiary text-black col-12">{{ performance.inizio.split('T')[1] }} ({{ p_published_durations[performance.id_artista] }})</span>
+                            <span class="badge me-1 mb-1 bg-secondary text-black col-12">{{ performance.start_date.split('T')[0] }}</span>
+                            <span class="badge me-1 mb-1 bg-tertiary text-black col-12">{{ performance.start_date.split('T')[1] }} ({{ p_published_durations[performance.artist_id] }})</span>
                         </section>
                         <section class="row d-flex align-items-center m-3 mt-0">
                             <span class="badge me-1 mb-1 bg-quaternary text-black col-12">{{ performance.stage_name }}</span>
-                            <span class="badge bg-quaternary text-black col-12">{{ performance.genere_musicale }}</span>
+                            <span class="badge bg-quaternary text-black col-12">{{ performance.music_genre }}</span>
                         </section>
                     </article>
                 </a>

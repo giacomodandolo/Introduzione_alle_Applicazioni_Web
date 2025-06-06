@@ -15,6 +15,8 @@
     --festival-common-color: #C0C0C0;
     --festival-common-background-color: #E0E0E0;
 
+    --festival-common-dark-color: #A0A0A0;
+
     --festival-silver-background-color: #e5e4e2;
 
     --festival-carousel-caption-background-color: 2, 2, 2; 
@@ -106,6 +108,10 @@ a.text-tertiary:hover {
     color: var(--festival-common-color) !important;
 }
 
+.text-common-dark {
+    color: var(--festival-common-dark-color) !important;
+}
+
 .text-dark {
     color: var(--festival-primary-color) !important;
 }
@@ -191,11 +197,6 @@ a.text-tertiary:hover {
 }
 
 /* ARTIST */
-
-.artist-name {
-    margin-top: 100px;
-}
-
 .artist-img-sm {
     height: 150px;
     width: 150px;

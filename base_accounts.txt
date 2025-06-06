@@ -1,0 +1,20 @@
+--- PRIMO COLLABORATORE ---
+mail:		primo.collaboratore@mail.com
+password:	Primo$Collaboratore1
+
+--- SECONDO COLLABORATORE ---
+mail:		secondo.collaboratore@mail.com
+password:	Secondo$Collaboratore2
+
+--- PRIMO PARTECIPANTE ---
+mail:		primo.partecipante@mail.com
+password:	Primo$Partecipante1
+
+--- SECONDO PARTECIPANTE ---
+mail:		secondo.partecipante@mail.com
+password:	Secondo$Partecipante2
+
+--- TERZO PARTECIPANTE ---
+mail:		terzo.partecipante@mail.com
+password:	Terzo$Partecipante3
+

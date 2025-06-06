@@ -1,12 +1,26 @@
+# *******************************************************
+# IMPORTS
+# *******************************************************
 import sqlite3
+import user_dao, stage_dao
 from datetime import datetime
-import user_dao, stage_dao, artist_dao
 from flask_login import current_user
 
-# DATES
+# *******************************************************
+# CONSTANTS
+# *******************************************************
 DATES = ["2025-07-18T00:00", "2025-07-19T00:00", "2025-07-20T00:00"]
 FORMAT = '%Y-%m-%dT%H:%M'
 
+# *******************************************************
+# SUPPORTING FUNCTIONS
+# *******************************************************
+"""
+Obtain the next day.
+
+:param day: day to obtain the next of
+:returns: the next day
+"""
 def get_next_day(day):
     match day:
         case "2025-07-18T00:00":
@@ -14,8 +28,61 @@ def get_next_day(day):
         case "2025-07-19T00:00":
             return "2025-07-20T00:00"
 
-# Operations on performances
 
+# *******************************************************
+# OPERATIONS ON ARTISTS
+# *******************************************************
+"""
+Obtain all the info of an artist through their respective ID.
+
+:param artist_id: the artist id used to retrieve info
+:returns: the obtained artist
+"""
+def get_artist(artist_id):
+    conn = sqlite3.connect('db/festival.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = 'SELECT name, image, short_description, description FROM artist WHERE id=?'
+    cursor.execute(sql, (artist_id,))
+    artist = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return artist
+
+
+"""
+Obtain all the info of an artist through their unique name.
+
+:param artist_name: the artist name used to retrieve info
+:returns: the obtained artist
+"""
+def get_artist_from_name(artist_name):
+    conn = sqlite3.connect('db/festival.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = 'SELECT id, name, image, short_description, description FROM artist WHERE name=?'
+    cursor.execute(sql, (artist_name,))
+    artist = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return artist
+
+
+# *******************************************************
+# OPERATIONS ON PERFORMANCES
+# *******************************************************
+"""
+Add the performance to the database through the information inserted in the performance form.
+
+:param performance_form: the performance form containing all the performance information
+:returns: status of the operation
+"""
 def add_performance(performance_form):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
@@ -23,8 +90,8 @@ def add_performance(performance_form):
     publish = 1
 
     success = False
-    sql_artist = 'INSERT INTO artista(nome, immagine, descrizione_breve, descrizione) VALUES(?,?,?,?)'
-    sql_performance = 'INSERT INTO performance(inizio, fine, genere_musicale, descrizione, immagine, pubblicata, id_artista, id_utente, id_palco) VALUES(?,?,?,?,?,?,?,?,?)'
+    sql_artist = 'INSERT INTO artist(name, image, short_description, description) VALUES(?,?,?,?)'
+    sql_performance = 'INSERT INTO performance(start_date, end_date, music_genre, description, image, published, artist_id, user_id, stage_id) VALUES(?,?,?,?,?,?,?,?,?)'
 
     if "draft_box" in performance_form:
         publish = 0
@@ -37,7 +104,6 @@ def add_performance(performance_form):
         success = True
     except Exception as e:
         print('ERROR', str(e))
-        # if something goes wrong: rollback
         conn.rollback()
 
     cursor.close()
@@ -45,6 +111,12 @@ def add_performance(performance_form):
 
     return success
 
+"""
+Update the performance to the database through the information inserted in the performance form.
+
+:param performance_form: the performance form containing all the performance information
+:returns: status of the operation
+"""
 def update_performance(performance_form, artist_id, overlap):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
@@ -52,8 +124,8 @@ def update_performance(performance_form, artist_id, overlap):
     publish = 1
 
     success = False
-    sql_artist = 'UPDATE artista SET nome=?, descrizione_breve=?, descrizione=? WHERE id=?'
-    sql_performance = 'UPDATE performance SET inizio=?, fine=?, genere_musicale=?, descrizione=?, pubblicata=?, id_utente=?, id_palco=? WHERE id_artista=?'
+    sql_artist = 'UPDATE artist SET name=?, short_description=?, description=? WHERE id=?'
+    sql_performance = 'UPDATE performance SET start_date=?, end_date=?, music_genre=?, description=?, published=?, user_id=?, stage_id=? WHERE artist_id=?'
 
     if "draft_box" in performance_form or overlap:
         publish = 0
@@ -65,7 +137,6 @@ def update_performance(performance_form, artist_id, overlap):
         success = True
     except Exception as e:
         print('ERROR', str(e))
-        # if something goes wrong: rollback
         conn.rollback()
 
     cursor.close()
@@ -75,18 +146,16 @@ def update_performance(performance_form, artist_id, overlap):
 
 
 """
-Obtain all the info of the performance associated with an artist
-from the database through their respective ID.
+Obtain all the info of the performances.
 
-:param artist_id: the artist id used to retrieve informations from the database
-:returns: the obtained performance, stage and collaborator
+:returns: the obtained performances
 """
 def get_performances():
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT descrizione, genere_musicale, pubblicata, immagine, inizio, fine, id_palco, id_utente FROM performance ORDER BY inizio'
+    sql = 'SELECT id, start_date, end_date, music_genre, description, image, published, artist_id, user_id, stage_id FROM performance'
     cursor.execute(sql)
     performances = cursor.fetchall()
 
@@ -95,19 +164,19 @@ def get_performances():
 
     return performances
 
+
 """
-Obtain all the info of the performance associated with an artist
-from the database through their respective ID.
+Obtain all the info of the performance associated with an artist from the database through the artist ID.
 
 :param artist_id: the artist id used to retrieve informations from the database
-:returns: the obtained performance, stage and collaborator
+:returns: the obtained performance
 """
 def get_performance_from_artist(artist_id):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT performance.descrizione as performance_description, genere_musicale, pubblicata, performance.immagine as performance_image, inizio, fine, id_palco, palco.nome as palco_nome, id_utente, artista.nome as artist_name, descrizione_breve, artista.descrizione as artist_description, artista.immagine as artist_image, id_artista FROM performance, palco, artista WHERE id_palco = palco.id AND id_artista = artista.id AND id_artista=?'
+    sql = 'SELECT start_date, end_date, performance.description as performance_description, performance.image as performance_image, music_genre, published, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, short_description, artist.description as artist_description, artist.image as artist_image, user_id FROM performance, stage, artist WHERE stage_id = stage.id AND artist_id = artist.id AND artist_id=?'
     cursor.execute(sql, (artist_id,))
     performance = cursor.fetchone()
 
@@ -116,62 +185,18 @@ def get_performance_from_artist(artist_id):
 
     return performance
 
-def get_people_count_days():
-    conn = sqlite3.connect('db/festival.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
 
-    sql = 'SELECT tipologia, giorno_inizio FROM biglietto'
-    cursor.execute(sql)
-    tickets = cursor.fetchall()
+"""
+Obtain the published performances.
 
-    cursor.close()
-    conn.close()
-    
-    ticket_counts = [0, 0, 0]
-    
-    for ticket in tickets:
-        match ticket["tipologia"]:
-            case 0:
-                index = (datetime.strptime(ticket["giorno_inizio"], FORMAT) - datetime(2025, 7, 18, 0, 0, 0)).days
-                ticket_counts[index] = ticket_counts[index] + 1
-            case 1:
-                index = (datetime.strptime(ticket["giorno_inizio"], FORMAT) - datetime(2025, 7, 18, 0, 0, 0)).days
-                ticket_counts[index] = ticket_counts[index] + 1
-                ticket_counts[index + 1] = ticket_counts[index + 1] + 1
-            case 2:
-                ticket_counts[0] = ticket_counts[0] + 1
-                ticket_counts[1] = ticket_counts[1] + 1
-                ticket_counts[2] = ticket_counts[2] + 1
-
-    return ticket_counts
-
-def get_tickets_per_type():
-    conn = sqlite3.connect('db/festival.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    sql = 'SELECT tipologia, giorno_inizio FROM biglietto'
-    cursor.execute(sql)
-    tickets = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-    
-    ticket_counts = [0, 0, 0]
-    
-    for ticket in tickets:
-        ticket_counts[ticket["tipologia"]] += 1 
-
-    return ticket_counts
-
-
+:returns: the published performances
+"""
 def get_published_performances():
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT performance.descrizione, genere_musicale, descrizione_breve, artista.immagine as artist_image, inizio, fine, palco.nome as stage_name, id_artista, artista.nome as artist_name, id_utente FROM performance, palco, artista WHERE pubblicata = 1 AND id_palco = palco.id AND id_artista = artista.id ORDER BY inizio'
+    sql = 'SELECT performance.id as performance_id, performance.description, music_genre, short_description, artist.image as artist_image, start_date, end_date, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, user_id FROM performance, stage, artist WHERE published = 1 AND stage_id = stage.id AND artist_id = artist.id ORDER BY start_date'
     cursor.execute(sql) 
     performances = cursor.fetchall()
 
@@ -181,12 +206,18 @@ def get_published_performances():
     return performances
     
 
+"""
+Obtain the unpublished performances of a collaborator.
+
+:param user_id: the collaborator id
+:returns: the unpublished performances
+"""
 def get_unpublished_performances(user_id):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT performance.descrizione, genere_musicale, descrizione_breve, artista.immagine as artist_image, inizio, fine, palco.nome as stage_name, id_artista, artista.nome as artist_name, id_utente FROM performance, palco, artista WHERE pubblicata = 0 AND id_palco = palco.id AND id_artista = artista.id AND id_utente=?'
+    sql = 'SELECT performance.id as performance_id, performance.description, music_genre, short_description, artist.image as artist_image, start_date, end_date, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, user_id FROM performance, stage, artist WHERE published = 0 AND stage_id = stage.id AND artist_id = artist.id AND user_id = ? ORDER BY start_date'
     cursor.execute(sql, (user_id, ))
     performances = cursor.fetchall()
 
@@ -195,31 +226,21 @@ def get_unpublished_performances(user_id):
 
     return performances
 
-def get_music_genres():
-    conn = sqlite3.connect('db/festival.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
 
-    sql = 'SELECT DISTINCT genere_musicale FROM performance WHERE pubblicata=1'
-    cursor.execute(sql) 
-    music_genres = cursor.fetchall()
+"""
+Obtain the filtered published performances according to the requested parameters.
 
-    cursor.close()
-    conn.close()
-
-    return music_genres
-
+:param filters: the filters to apply
+:returns: the filtered published performances
+"""
 def get_published_performances_filter(filters):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     filter_statement = ""
-    filter_names = ["inizio", "id_palco", "genere_musicale"]
-    
-    print(filters)
-    
+    filter_names = ["start_date", "stage_id", "music_genre"]
+        
     for i in range(0, len(filters)):
-        print(filters[i], filter_statement)
         if filters[i]:
             match i:
                 case 0: # filter date
@@ -227,13 +248,11 @@ def get_published_performances_filter(filters):
                     if filters[i] != DATES[2]:
                         filter_statement += "AND " + filter_names[i] + "<'" + get_next_day(filters[i]) + "' "
                 case 1: # filter stage
-                    filter_statement += "AND " + filter_names[i] + "= " + filters[i] + " "
+                    filter_statement += "AND " + filter_names[i] + "=" + filters[i] + " "
                 case 2: # filter genre
-                    filter_statement += "AND " + filter_names[i] + "= '" + filters[i] + "' "
+                    filter_statement += "AND " + filter_names[i] + "='" + filters[i] + "' "
 
-            
-    
-    sql = f'SELECT performance.descrizione, genere_musicale, descrizione_breve, artista.immagine as artist_image, inizio, fine, palco.nome as stage_name, id_artista, artista.nome as artist_name, id_utente FROM performance, palco, artista WHERE pubblicata = 1 AND id_palco = palco.id AND id_artista = artista.id {filter_statement}ORDER BY inizio'
+    sql = f'SELECT performance.id as performance_id, performance.description, music_genre, short_description, artist.image as artist_image, start_date, end_date, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, user_id FROM performance, stage, artist WHERE published = 1 AND stage_id = stage.id AND artist_id = artist.id {filter_statement}ORDER BY start_date'
     print(sql)
     cursor.execute(sql) 
     performances = cursor.fetchall()
@@ -242,3 +261,90 @@ def get_published_performances_filter(filters):
     conn.close()
 
     return performances
+
+
+# *******************************************************
+# PERFORMANCE STATISTICS
+# *******************************************************
+"""
+Obtain the quantity of people for each day.
+
+:returns: the list of quantity of people for each day
+"""
+def get_count_people_days():
+    conn = sqlite3.connect('db/festival.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = 'SELECT type, start_date FROM ticket'
+    cursor.execute(sql)
+    tickets = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    
+    people_numbers = [0, 0, 0]
+    
+    for ticket in tickets:
+        match ticket["type"]:
+            case 0:
+                index = (datetime.strptime(ticket["start_date"], FORMAT) - datetime(2025, 7, 18, 0, 0, 0)).days
+                people_numbers[index] = people_numbers[index] + 1
+            case 1:
+                index = (datetime.strptime(ticket["start_date"], FORMAT) - datetime(2025, 7, 18, 0, 0, 0)).days
+                people_numbers[index] = people_numbers[index] + 1
+                people_numbers[index + 1] = people_numbers[index + 1] + 1
+            case 2:
+                people_numbers[0] = people_numbers[0] + 1
+                people_numbers[1] = people_numbers[1] + 1
+                people_numbers[2] = people_numbers[2] + 1
+
+    return people_numbers
+
+
+"""
+Obtain the quantity of tickets for each type.
+
+:returns: the list of quantity of tickets for each type
+"""
+def get_tickets_per_type():
+    conn = sqlite3.connect('db/festival.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = 'SELECT type, start_date FROM ticket'
+    cursor.execute(sql)
+    tickets = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    
+    ticket_counts = [0, 0, 0]
+    
+    for ticket in tickets:
+        ticket_counts[ticket["type"]] += 1 
+
+    return ticket_counts
+
+
+# *******************************************************
+# OPERATIONS ON MUSIC GENRES
+# *******************************************************
+"""
+Obtain all the distinct music genres.
+
+:returns: the distinct music genres
+"""
+def get_music_genres():
+    conn = sqlite3.connect('db/festival.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = 'SELECT DISTINCT music_genre as name FROM performance WHERE published=1'
+    cursor.execute(sql)
+    music_genres = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return music_genres
