@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %} {{ p_artist.nome }} {% endblock title %}
+
+{% block body_content %}
+
+<main class="h-100 gradient-custom-2">
+    <div class="container pb-3 h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="col col-lg-9 col-xl-8">
+                <div class="card rounded-4">
+                    <article class="rounded-top-4 text-white d-flex flex-row bg-primary">
+                        <div class="ms-4 mt-5 d-flex flex-column artist-img-sm">
+                            <img src="{{ url_for('static', filename=p_artist.immagine) }}"
+                            alt="{{ p_artist.nome }}" class="img-fluid img-thumbnail mt-4 mb-2">
+                        </div>
+                        <section class="ms-3 artist-name">
+                            <h4 class="text-common">{{ p_artist.nome }}</h4>
+                            <section>
+                                <span class="badge me-1 bg-secondary text-black">{{ p_date }}</span>
+                                <span class="badge bg-tertiary text-black">{{ p_hour }} ({{ p_duration }})</span>
+                                <span class="badge bg-quaternary text-black">{{ p_stage }}</span>
+                            </section>
+                        </section>
+                    </article>
+                    <article class="card-body p-4 pb-2 text-black">
+                        <section class="my-2 text-body">
+                            <div class="p-4 bg-common rounded-3">
+                                <p class="font-italic mb-1">{{ p_artist.descrizione }}</p>
+                            </div>
+                        </section>
+                        {% if p_extra_image %}
+                        <figure class="col">
+                            <img src="{{ url_for('static', filename=p_extra_image) }}" alt="" class="w-100 rounded-3">
+                        </figure>
+                        {% endif %}
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock body_content %}

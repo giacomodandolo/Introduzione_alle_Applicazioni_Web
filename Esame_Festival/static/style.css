@@ -1,0 +1,211 @@
+:root {
+    --festival-background-color: #C0C0C0;
+
+    --festival-primary-color: #444;
+
+    --festival-secondary-color: #EE7700;
+    --festival-secondary-hover-color: #FF8800;
+    
+    --festival-tertiary-color: #FF7F50;
+    --festival-tertiary-hover-color: #FFAF50;
+
+    --festival-quaternary-color: #FFAA00;
+    --festival-quaternary-hover-color: #FFCC00;
+    
+    --festival-common-color: #C0C0C0;
+    --festival-common-background-color: #E0E0E0;
+
+    --festival-silver-background-color: #e5e4e2;
+
+    --festival-carousel-caption-background-color: 2, 2, 2; 
+
+    --festival-artist-description-color: #E0E0E0;
+}
+
+body {
+    background-image: url("background.webp");
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+svg {
+    fill: var(--festival-common-color);
+}
+
+/* HEADER & FOOTER */ 
+
+.header {
+    line-height: 0;
+}
+
+.nav-logo {
+    height: 100%;
+    width: auto;
+    max-height: 60px;
+    object-fit: contain;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+}
+
+/* BACKGROUND */
+
+.bg-primary {
+    background-color: var(--festival-primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--festival-secondary-color) !important;
+}
+
+.bg-tertiary {
+    background-color: var(--festival-tertiary-color) !important;
+}
+
+.bg-quaternary {
+    background-color: var(--festival-quaternary-color) !important;
+}
+
+.bg-common {
+    background-color: var(--festival-common-background-color);
+}
+
+.bg-silver {
+    background-color: var(--festival-silver-background-color);
+}
+
+/* TEXT */
+
+.text-primary {
+    color: var(--festival-secondary-color) !important;
+}
+
+a.text-primary:hover {
+    color: var(--festival-secondary-hover-color) !important;
+}
+
+.text-secondary {
+    color: var(--festival-tertiary-color) !important;
+}
+
+a.text-secondary:hover {
+    color: var(--festival-tertiary-hover-color) !important;
+}
+
+.text-tertiary {
+    color: var(--festival-quaternary-color) !important;
+}
+
+a.text-tertiary:hover {
+    color: var(--festival-quaternary-hover-color) !important;
+}
+
+.text-common {
+    color: var(--festival-common-color) !important;
+}
+
+.text-dark {
+    color: var(--festival-primary-color) !important;
+}
+
+/* NAVIGATION */
+
+.link {
+    color: var(--festival-tertiary-color);
+}
+
+.link:hover {
+    color: var(--festival-tertiary-hover-color);
+}
+
+/* BUTTON */
+
+.btn {
+    color: var(--festival-tertiary-color);
+    border-color: var(--festival-tertiary-color);
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    color: var(--festival-tertiary-hover-color);
+    border-color: var(--festival-tertiary-hover-color);
+}
+
+.btn:active {
+    color: var(--festival-secondary-hover-color) !important;
+    border-color: var(--festival-secondary-hover-color) !important;
+}
+
+.btn-no-transition {
+    transition: none;
+}
+
+.btn-no-transition:hover {
+    transform: none;
+}
+
+.btn-no-transition:hover {
+    color: var(--festival-tertiary-hover-color);
+    border-color: var(--festival-tertiary-hover-color);
+}
+
+.btn-disabled {
+    color: var(--festival-common-color) !important;
+    border-color: var(--festival-common-color) !important;
+}
+
+/* CAROUSEL */
+.filter-silver {
+    filter: invert(94%) sepia(0%) saturate(1903%) hue-rotate(334deg) brightness(88%) contrast(75%);
+}
+
+.carousel-caption {
+    background-color: rgba(var(--festival-carousel-caption-background-color), 0.6) !important;
+}
+
+.sticky-top {
+    top: 1em;
+}
+
+/* CARDS */
+
+.card-interaction {
+    transition: all 0.2s ease;
+}
+
+.card-interaction:hover {
+    transform: scale(1.05);
+}
+
+/* BORDER */
+
+.border-primary {
+    border-color: var(--festival-primary-color);
+}
+
+.border-common {
+    border-color: var(--festival-background-color);
+}
+
+/* ARTIST */
+
+.artist-name {
+    margin-top: 100px;
+}
+
+.artist-img-sm {
+    height: 150px;
+    width: 150px;
+}
+
+.artist-img-lg {
+    height: 400px;
+    width: 400px;
+}
+
+.artist-description {
+    color: var(--festival-artist-description-color);
+}

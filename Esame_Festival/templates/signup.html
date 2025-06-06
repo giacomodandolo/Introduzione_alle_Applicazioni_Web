@@ -1,0 +1,45 @@
+{% extends "base.html"%}
+{% block title %}Registrazione{% endblock title %}
+
+{% block body_content %}
+<main class="h-100 col-sm-12 col-md-9 col-lg-6 m-auto mb-4">
+    <section class="card p-2 bg-primary">
+        <sectiontitle class="card-header text-primary border-common">
+            <h3>Registrazione</h3>
+        </sectiontitle>
+        <article class="card-body">
+            <form action="{{ url_for('signup', method='POST')}}" method="POST" enctype="multipart/form-data">
+                <!-- NAME -->
+                <div class="mb-3">
+                    <label for="userName" class="form-label text-common">Nome</label>
+                    <input type="text" name="name" id="userName" class="form-control" placeholder="Mario" maxlength="50" required>
+                </div>
+                <!-- SURNAME -->
+                <div class="mb-3">
+                    <label for="userSurname" class="form-label text-common">Cognome</label>
+                    <input type="text" name="surname" id="userSurname" class="form-control" placeholder="Rossi" maxlength="50" required>
+                </div>
+                <!-- EMAIL -->
+                <div class="mb-3">
+                    <label for="userEmail" class="form-label text-common">Email</label>
+                    <input type="email" name="email" id="userEmail" class="form-control" placeholder="mario.rossi@gmail.com" required>
+                </div>
+                <!-- PASSWORD -->
+                <div class="mb-3">
+                    <label for="userPassword" class="form-label text-common">Password</label>
+                    <input type="password" name="password" id="userPassword" class="form-control" placeholder="Password" required>
+                </div>
+                <!-- USER TYPE -->
+                <div class="mb-3">
+                    <label for="userType" class="form-label text-common">Tipologia Utente</label>
+                    <select name="type" id="userType" class="form-select">
+                        <option value="1">Partecipante</option>
+                        <option value="2">Collaboratore</option>
+                    </select>
+                </div>
+                <input type="submit" value="Registrati" class="btn">
+            </form>
+        </article>
+    </section>
+</main>
+{% endblock body_content %}

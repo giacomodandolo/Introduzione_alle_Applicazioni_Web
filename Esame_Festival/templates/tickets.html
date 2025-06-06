@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Biglietti{% endblock title %}
+
+{% block body_content %}
+<main>
+    <form action="{{ url_for('tickets', method='POST')}}" method="POST">
+        <main>
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                <div class="col mb-3">
+                    <article class="card rounded-3 shadow-sm bg-primary h-100 border-common">
+                        <div class="card-header py-3 border-common">
+                            <h4 class="my-0 fw-normal text-primary">Biglietto Singolo</h4>
+                        </div>
+                        <div class="card-body text-common">
+                            <h1 class="card-title pricing-card-title">7.99 €</h1>
+                            <ul class="list-unstyled mt-3">
+                                <li class="mb-3">Per un solo giorno a scelta!</li>
+                                <li>
+                                    <select name="choice1" id="ticketType1" class="form-select">
+                                        <option value="0">18/07/2025</option>
+                                        <option value="1">19/07/2025</option>
+                                        <option value="2">20/07/2025</option>
+                                    </select>
+                                </li>
+                            </ul> 
+                        </div>
+                        {% if current_user.type == 2 or p_ticket or p_people_count_days[0] == 200 %} 
+                            <button type="button" name="submitBtn" value="0" class="btn btn-no-transition btn-lg rounded-top-0 disabled btn-disabled border-0 border-top">
+                                Impossibile acquistare
+                            </button>
+                        {% else %} 
+                            <button type="submit" name="submitBtn" value="0" class="btn btn-no-transition btn-lg rounded-top-0 border-0 border-top">
+                                Compra ora
+                            </button>
+                        {% endif %}
+                    </article>
+                </div>
+
+                <div class="col mb-3">
+                    <article class="card rounded-3 shadow-sm bg-primary h-100 border-common">
+                        <div class="card-header py-3 border-common">
+                            <h4 class="my-0 fw-normal text-primary">Biglietto Doppio</h4>
+                        </div>
+                        <div class="card-body text-common">
+                            <h1 class="card-title pricing-card-title">11.99 €</h1>
+                            <ul class="list-unstyled mt-3">
+                                <li class="mb-3">Per due giorni a scelta!</li>
+                                <li>
+                                    <select name="choice2" id="ticketType2" class="form-select">
+                                        <option value="0">18/07/2025 - 19/07/2025</option>
+                                        <option value="1">19/07/2025 - 20/07/2025</option>
+                                    </select>
+                                </li>
+                            </ul> 
+                                
+                        </div>
+                        {% if current_user.type == 2 or p_ticket or p_people_count_days[1] == 200 %} 
+                            <button type="button" name="submitBtn" value="1" class="btn btn-no-transition btn-lg rounded-top-0 disabled btn-disabled border-0 border-top">
+                                Impossibile acquistare
+                            </button>
+                        {% else %} 
+                            <button type="submit" name="submitBtn" value="1" class="btn btn-no-transition btn-lg rounded-top-0 border-0 border-top">
+                                Compra ora
+                            </button>
+                        {% endif %}
+                    </article>
+                </div>
+
+                <div class="col mb-3">
+                    <article class="card rounded-3 shadow-sm bg-primary h-100 border-common">
+                        <div class="card-header py-3 border-common bg-silver">
+                            <h4 class="my-0 fw-normal text-dark">Biglietto Platino</h4>
+                        </div>
+                        <div class="card-body text-common">
+                            <h1 class="card-title pricing-card-title">16.99 €</h1>
+                            <ul class="list-unstyled mt-3">
+                                <li class="mb-3">Per tutti e tre i giorni!</li>
+                            </ul> 
+                        </div>
+                        {% if current_user.type == 2 or p_ticket or p_people_count_days[0] == 200 or p_people_count_days[1  ] == 200 or p_people_count_days[2] == 200 %} 
+                            <button type="button" name="submitBtn" value="2" class="btn btn-no-transition btn-lg rounded-top-0 disabled btn-disabled border-0 border-top">
+                                Impossibile acquistare
+                            </button>
+                        {% else %} 
+                            <button type="submit" name="submitBtn" value="2" class="btn btn-no-transition btn-lg rounded-top-0 border-0 border-top">
+                                Compra ora
+                            </button>
+                        {% endif %}
+                    </article>
+                </div>
+            </div>
+        </main>
+    </form>
+</main>
+{% endblock body_content %}
