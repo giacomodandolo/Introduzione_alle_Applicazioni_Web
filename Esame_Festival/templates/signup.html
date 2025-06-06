@@ -8,31 +8,37 @@
             <h3>Registrazione</h3>
         </sectiontitle>
         <article class="card-body">
-            <form action="{{ url_for('signup', method='POST')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url_for('signup', method='POST')}}" method="POST">
                 <!-- NAME -->
                 <div class="mb-3">
-                    <label for="userName" class="form-label text-common">Nome</label>
-                    <input type="text" name="name" id="userName" class="form-control" placeholder="Mario" maxlength="50" required>
+                    <label for="user_name" class="form-label text-common">Nome</label>
+                    <input type="text" name="name" id="user_name" class="form-control" placeholder="Mario" maxlength="100" required>
                 </div>
                 <!-- SURNAME -->
                 <div class="mb-3">
-                    <label for="userSurname" class="form-label text-common">Cognome</label>
-                    <input type="text" name="surname" id="userSurname" class="form-control" placeholder="Rossi" maxlength="50" required>
+                    <label for="user_surname" class="form-label text-common">Cognome</label>
+                    <input type="text" name="surname" id="user_surname" class="form-control" placeholder="Rossi" maxlength="100" required>
                 </div>
                 <!-- EMAIL -->
                 <div class="mb-3">
-                    <label for="userEmail" class="form-label text-common">Email</label>
-                    <input type="email" name="email" id="userEmail" class="form-control" placeholder="mario.rossi@gmail.com" required>
+                    <label for="user_email" class="form-label text-common">Email</label>
+                    <input type="email" name="email" id="user_email" class="form-control" placeholder="mario.rossi@gmail.com" maxlength="128" required>
                 </div>
                 <!-- PASSWORD -->
+                <div class="">
+                    <label for="user_password" class="form-label text-common">Password</label>
+                    <input type="password" name="password" id="user_password" oninput="validatePassword(this.value)" class="form-control" maxlength="255" required>
+                </div>
+                <div class="form-text mb-3 text-common-dark">La password deve avere almeno 8 caratteri, di cui almeno uno alfanumerico, un carattere maiuscolo, un carattere minuscolo ed un carattere speciale #?!@$%^&*-</div>
+                <!-- VERIFY PASSWORD -->
                 <div class="mb-3">
-                    <label for="userPassword" class="form-label text-common">Password</label>
-                    <input type="password" name="password" id="userPassword" class="form-control" placeholder="Password" required>
+                    <label for="user_password" class="form-label text-common">Conferma password</label>
+                    <input type="password" name="verify_password" id="verify_user_password" class="form-control" maxlength="255" required>
                 </div>
                 <!-- USER TYPE -->
                 <div class="mb-3">
-                    <label for="userType" class="form-label text-common">Tipologia Utente</label>
-                    <select name="type" id="userType" class="form-select">
+                    <label for="user_type" class="form-label text-common">Tipologia Utente</label>
+                    <select name="type" id="user_type" class="form-select">
                         <option value="1">Partecipante</option>
                         <option value="2">Collaboratore</option>
                     </select>

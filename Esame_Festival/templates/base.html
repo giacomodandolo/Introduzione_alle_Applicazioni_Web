@@ -42,7 +42,7 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
-                            <div class="d-flex justify-content-center bg-{{ category }} p-2 w-100 m-auto mb-3 rounded-2">{{ message }}</div>
+                            <h5 class="d-flex justify-content-center text-black bg-{{ category }} p-2 w-100 m-auto mb-3 rounded-2">{{ message }}</h5>
                         {% endfor %}
                     {% endif %}
                 {% endwith %}

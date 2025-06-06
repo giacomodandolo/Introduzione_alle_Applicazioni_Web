@@ -9,7 +9,7 @@
                 <h2>Inserimento della performance</h2>
         </sectiontitle>
         <article class="card-body">
-            <form action="{{ url_for('profile', method='POST')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url_for('performance_post', method='POST')}}" method="POST" enctype="multipart/form-data">
                 <section class="h-100 border-bottom mb-4">
                     <sectiontitle class="text-secondary border-common">
                         <h3>Informazioni dell'artista</h3>
@@ -17,23 +17,24 @@
                     <!-- NAME -->
                     <div class="mb-3">
                         <label for="artist_name" class="form-label text-common">Nome</label>
-                        <input type="text" name="name" id="artist_name" class="form-control" placeholder="Mario" maxlength="50" required>
+                        <input type="text" name="name" id="artist_name" class="form-control" placeholder="Mario" maxlength="100" required>
                     </div>
                     <!-- SHORT DESCRIPTION -->
                     <div class="mb-3">
                         <label for="artist_short_description" class="form-label text-common">Breve descrizione</label>
-                        <textarea name="short_description" id="artist_short_description" class="form-control" placeholder="Breve descrizione dell'artista" maxlength="50" required></textarea>
+                        <textarea name="short_description" id="artist_short_description" class="form-control" placeholder="Breve descrizione dell'artista" maxlength="100" required></textarea>
                     </div>
                     <!-- DESCRIPTION -->
                     <div class="mb-3">
                         <label for="artist_description" class="form-label text-common">Descrizione</label>
-                        <textarea name="artist_description" id="artist_description" class="form-control" placeholder="Lunga descrizione dell'artista" maxlength="255" rows="4" required></textarea>
+                        <textarea name="artist_description" id="artist_description" class="form-control" placeholder="Lunga descrizione dell'artista" maxlength="512" rows="4" required></textarea>
                     </div>
                     <!-- IMAGE -->
-                    <div class="mb-3">
+                    <div class="">
                         <label for="artist_image_id" class="form-label text-common">Immagine</label>
                         <input type="file" name="artist_image" id="artist_image_id" class="form-control" required>
                     </div>
+                    <div class="form-text mb-3 text-common-dark">L'immagine deve essere in formato jpg, jpeg, png o webp</div>
                 </section>
                 <section class="h-100 border-bottom mb-4">
                     <sectiontitle class="text-secondary border-common">
@@ -52,27 +53,28 @@
                     <!-- MUSIC GENRE -->
                     <div class="mb-3">
                         <label for="music_genre" class="form-label text-common">Genere musicale</label>
-                        <input type="text" name="music_genre" id="music_genre" class="form-control" placeholder="Rock" maxlength="50"  required>
+                        <input type="text" name="music_genre" id="music_genre" class="form-control" placeholder="Rock" maxlength="100" required>
                     </div>
                     <!-- STAGE -->
                     <div class="mb-3">
                         <label for="performance_stage" class="form-label text-common">Palco</label>
                         <select name="stage" id="performance_stage" class="form-select">
                         {% for stage in p_stage %}
-                            <option value="{{ stage.id }}">{{ stage.nome }}</option>
+                            <option value="{{ stage.id }}">{{ stage.name }}</option>
                         {% endfor %}
                         </select>
                     </div>
                     <!-- DESCRIPTION -->
                     <div class="mb-3">
                         <label for="performance_description" class="form-label text-common">Descrizione</label>
-                        <textarea name="performance_description" id="performance_description" class="form-control" placeholder="Lunga descrizione della performance" maxlength="255" rows="4" required></textarea>
+                        <textarea name="performance_description" id="performance_description" class="form-control" placeholder="Lunga descrizione della performance" maxlength="512" rows="4" required></textarea>
                     </div>
                     <!-- IMAGE -->
-                    <div class="mb-3">
+                    <div class="">
                         <label for="performance_image_id" class="form-label text-common">Immagine</label>
                         <input type="file" name="performance_image" id="performance_image_id" class="form-control" required>
                     </div>
+                    <div class="form-text mb-3 text-common-dark">L'immagine deve essere in formato jpg, jpeg, png o webp</div>
                     <!-- DRAFT -->
                     <div class="form-check">
                         <label for="draft_box" class="form-label text-common">Bozza</label>
@@ -88,7 +90,7 @@
             <h2>Aggiornamento della performance</h2>
         </sectiontitle>
         <article class="card-body">
-            <form action="{{ url_for('update_performance', artist_id=p_performance.id_artista, method='POST')}}" method="POST">
+            <form action="{{ url_for('update_performance', artist_id=p_performance.artist_id, method='POST')}}" method="POST">
                 <section class="h-100 border-bottom mb-4">
                     <sectiontitle class="text-secondary border-common">
                         <h3>Informazioni dell'artista</h3>
@@ -101,7 +103,7 @@
                     <!-- SHORT DESCRIPTION -->
                     <div class="mb-3">
                         <label for="artist_short_description" class="form-label text-common">Breve descrizione</label>
-                        <textarea name="short_description" id="artist_short_description" class="form-control" placeholder="Breve descrizione dell'artista" maxlength="50" required>{{ p_performance.descrizione_breve }}</textarea>
+                        <textarea name="short_description" id="artist_short_description" class="form-control" placeholder="Breve descrizione dell'artista" maxlength="50" required>{{ p_performance.short_description }}</textarea>
                     </div>
                     <!-- DESCRIPTION -->
                     <div class="mb-3">
@@ -116,24 +118,24 @@
                     <!-- START -->
                     <div class="mb-3">
                         <label for="performance_start_date" class="form-label text-common">Data inizio</label>
-                        <input type="datetime-local" name="start_date" id="performance_start_date" class="form-control" min="2025-07-18 00:00" max="2025-07-20 23:59" placeholder="2025-07-18 00:00" value="{{ p_performance.inizio }}"required>
+                        <input type="datetime-local" name="start_date" id="performance_start_date" class="form-control" min="2025-07-18 00:00" max="2025-07-20 23:59" placeholder="2025-07-18 00:00" value="{{ p_performance.start_date }}"required>
                     </div>
                     <!-- END -->
                     <div class="mb-3">
                         <label for="performance_end_date" class="form-label text-common">Data fine</label>
-                        <input type="datetime-local" name="end_date" id="performance_end_date" class="form-control" min="2025-07-18 00:00" max="2025-07-20 23:59" placeholder="2025-07-18 00:00" value="{{ p_performance.fine }}"required>
+                        <input type="datetime-local" name="end_date" id="performance_end_date" class="form-control" min="2025-07-18 00:00" max="2025-07-20 23:59" placeholder="2025-07-18 00:00" value="{{ p_performance.end_date }}"required>
                     </div>
                     <!-- MUSIC GENRE -->
                     <div class="mb-3">
                         <label for="music_genre" class="form-label text-common">Genere musicale</label>
-                        <input type="text" name="music_genre" id="music_genre" class="form-control" placeholder="Rock" maxlength="50" value="{{ p_performance.genere_musicale }}" required>
+                        <input type="text" name="music_genre" id="music_genre" class="form-control" placeholder="Rock" maxlength="50" value="{{ p_performance.music_genre }}" required>
                     </div>
                     <!-- STAGE -->
                     <div class="mb-3">
                         <label for="performance_stage" class="form-label text-common">Palco</label>
                         <select name="stage" id="performance_stage" class="form-select">
                             {% for stage in p_stage %}
-                                <option value="{{ stage.id }}" {% if p_performance.id_palco == stage.id %} selected {% endif %} >{{ stage.nome }}</option>
+                                <option value="{{ stage.id }}" {% if p_performance.stage_id == stage.id %} selected {% endif %} >{{ stage.name }}</option>
                             {% endfor %}
                         </select>
                     </div>

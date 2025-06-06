@@ -1,17 +1,25 @@
+# *******************************************************
+# IMPORTS
+# *******************************************************
 import sqlite3
-from datetime import datetime
-
 from flask_login import current_user
 
-# Operations on users
+# *******************************************************
+# USER OPERATIONS
+# *******************************************************
+"""
+Add the user to the database through the information inserted in the signup form.
 
+:param user_form: the user form containing all the user information
+:returns: status of the operation
+"""
 def add_user(user_form):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     success = False
-    sql = 'INSERT INTO utente(nome, cognome, email, password, tipologia) VALUES(?,?,?,?,?)'
+    sql = 'INSERT INTO user(name, surname, email, password, type) VALUES(?,?,?,?,?)'
 
     try:
         cursor.execute(sql, (user_form['name'], user_form['surname'], user_form['email'], user_form['password'], user_form['type']))
@@ -19,30 +27,6 @@ def add_user(user_form):
         success = True
     except Exception as e:
         print('ERROR', str(e))
-        # if something goes wrong: rollback
-        conn.rollback()
-
-    cursor.close()
-    conn.close()
-
-    return success
-
-def add_ticket_to_user(ticket):
-    conn = sqlite3.connect('db/festival.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    success = False
-    sql = 'INSERT INTO biglietto(giorno_inizio, tipologia, utente_id) VALUES(?,?,?)'
-    
-    try:
-        cursor.execute(sql, (ticket["start_date"], ticket["type"], current_user.id))
-        
-        conn.commit()
-        success = True
-    except Exception as e:
-        print('ERROR', str(e))
-        # if something goes wrong: rollback
         conn.rollback()
 
     cursor.close()
@@ -52,10 +36,9 @@ def add_ticket_to_user(ticket):
 
 
 """
-Obtain all the info of a user from the database 
-through their respective ID.
+Obtain all the info of a user from the database through their respective ID.
 
-:param user_id: the user id used to retrieve informations from the database
+:param user_id: the user id used to retrieve info
 :returns: the obtained user
 """
 def get_user(user_id):
@@ -63,7 +46,7 @@ def get_user(user_id):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT id, nome, cognome, email, password, tipologia FROM utente WHERE id=?'
+    sql = 'SELECT id, name, surname, email, password, type FROM user WHERE id=?'
     cursor.execute(sql, (user_id,))
     user = cursor.fetchone()
 
@@ -72,12 +55,19 @@ def get_user(user_id):
 
     return user
 
+
+"""
+Obtain all the info of a user from the database through their unique email.
+
+:param user_email: the user email used to retrieve info
+:returns: the obtained user
+"""
 def get_user_by_email(user_email):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT id, nome, cognome, email, password, tipologia FROM utente WHERE email=?'
+    sql = 'SELECT id, name, surname, email, password, type FROM user WHERE email=?'
     cursor.execute(sql, (user_email,))
     user = cursor.fetchone()
 
@@ -86,12 +76,50 @@ def get_user_by_email(user_email):
 
     return user
 
+
+# *******************************************************
+# TICKET OPERATIONS
+# *******************************************************
+"""
+Associates a ticket to a user through the information inserted in the tickets form.
+
+:param ticket_form: the ticket form containing all the ticket information
+:returns: status of the operation
+"""
+def add_ticket_to_user(ticket_form):
+    conn = sqlite3.connect('db/festival.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    success = False
+    sql = 'INSERT INTO ticket(start_date, type, user_id) VALUES(?,?,?)'
+    
+    try:
+        cursor.execute(sql, (ticket_form["start_date"], ticket_form["type"], current_user.id))
+        conn.commit()
+        success = True
+    except Exception as e:
+        print('ERROR', str(e))
+        conn.rollback()
+
+    cursor.close()
+    conn.close()
+
+    return success
+
+
+"""
+Obtain all the info of a user from the database through their respective ID.
+
+:param user_id: the user id to retrieve the informations of
+:returns: the obtained user
+"""
 def get_ticket_by_user_id(user_id):
     conn = sqlite3.connect('db/festival.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT id, giorno_inizio, tipologia FROM biglietto WHERE utente_id=?'
+    sql = 'SELECT id, start_date, type FROM ticket WHERE user_id=?'
     cursor.execute(sql, (user_id,))
     ticket = cursor.fetchone()
 
