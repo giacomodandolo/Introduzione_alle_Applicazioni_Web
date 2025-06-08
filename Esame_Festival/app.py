@@ -87,7 +87,6 @@ Checks if the email has a valid format.
 :return: Match object if matching, None if not matching
 """
 def is_email_valid(email):
-    print(email, re.search(EMAIL_REGEX, email))
     return re.fullmatch(EMAIL_REGEX, email)
 
 
@@ -467,6 +466,7 @@ def performance_post():
         ext = artist_image.filename.split(".")[-1]
         if ext not in ALLOWED_IMAGE_EXTENSIONS:
             flash("Estensione dei file non permessa.", "danger")
+            return homepage()
         
         img = Image.open(artist_image)
 
@@ -492,6 +492,7 @@ def performance_post():
         ext = performance_image.filename.split(".")[-1]
         if ext not in ALLOWED_IMAGE_EXTENSIONS:
             flash("Estensione dei file non permessa.", "danger")
+            return homepage()
         
         img = Image.open(performance_image)
         new_filename = performance_form.get("name").lower() + "_performance_" + str(timestamp) + "." + ext
