@@ -176,7 +176,7 @@ def get_performance_from_artist(artist_id):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT start_date, end_date, performance.description as performance_description, performance.image as performance_image, music_genre, published, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, short_description, artist.description as artist_description, artist.image as artist_image, user_id FROM performance, stage, artist WHERE stage_id = stage.id AND artist_id = artist.id AND artist_id=?'
+    sql = 'SELECT start_date, end_date, performance.description as performance_description, performance.image as performance_image, music_genre, published, stage_id, stage.name as stage_name, stage.description as stage_description, stage.image as stage_image, artist_id, artist.name as artist_name, short_description, artist.description as artist_description, artist.image as artist_image, user_id FROM performance, stage, artist WHERE stage_id = stage.id AND artist_id = artist.id AND artist_id=?'
     cursor.execute(sql, (artist_id,))
     performance = cursor.fetchone()
 

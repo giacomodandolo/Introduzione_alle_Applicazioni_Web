@@ -569,19 +569,13 @@ def update_performance_post(artist_id):
     
     if success and overlap:
         flash("Performance in sovrapposizione con un'altra performance pubblicata.", "warning")
-        return performance()
+        return update_performance(artist_id)
     elif success:
         flash("Performance aggiornata correttamente.", "success")
         return profile()
     else:
         flash("Errore nell'aggiornamento della performance: riprova!", "danger")
-        return performance()
-    
-    return render_template(
-        "performance.html", 
-        p_performance = performance_db, 
-        p_request_type = 0
-    )
+        return update_performance(artist_id)
 
 
 # *******************************************************
