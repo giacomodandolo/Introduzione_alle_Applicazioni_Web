@@ -2,24 +2,24 @@
 {% block title %}Login{% endblock title %}
 
 {% block body_content %}
-<main class="d-flex justify-content-center h-100 mb-4">
-    <section class="card p-2 bg-primary col-12 col-md-8 col-lg-5">
-        <sectiontitle class="card-header text-primary border-common">
+<main class="d-flex justify-content-center h-100">
+    <section class="d-flex justify-content-center h-100 mb-4 card p-2 bg-primary col-12 col-md-8 col-lg-5">
+        <header class="card-header text-primary border-common">
             <h3>Login</h3>
-        </sectiontitle>
-        <article class="card-body">
+        </header>
+        <div class="card-body">
             <form action="{{ url_for('login', method='POST')}}" method="POST">
-                <div class="mb-3">
+                <article class="mb-3">
                     <label for="userEmail" class="form-label text-common">Indirizzo Email</label>
                     <input type="email" name="email" id="userEmail" class="form-control" placeholder="mario.rossi@gmail.com" required>
-                </div>
-                <div class="mb-3">
+                </article>
+                <article class="mb-3">
                     <label for="userPassword" class="form-label text-common">Password</label>
                     <input type="password" name="password" id="userPassword" class="form-control" placeholder="Password" required>
-                </div>
+                </article>
                 <input type="submit" value="Login" class="btn">
             </form>
-        </article>
+        </div>
         <footer class="card-footer border-common">
             <p class="links text-common">
                 Non hai un account? <a class="link" href="{{ url_for('signup') }}">Registrati</a>

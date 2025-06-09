@@ -4,45 +4,45 @@
 {% block body_content %}
 <main class="h-100 col-sm-12 col-md-9 col-lg-6 m-auto mb-4">
     <section class="card p-2 bg-primary">
-        <sectiontitle class="card-header text-primary border-common">
+        <header class="card-header text-primary border-common">
             <h3>Registrazione</h3>
-        </sectiontitle>
+        </header>
         <article class="card-body">
             <form action="{{ url_for('signup', method='POST')}}" method="POST">
                 <!-- NAME -->
-                <div class="mb-3">
+                <section class="mb-3">
                     <label for="user_name" class="form-label text-common">Nome</label>
                     <input type="text" name="name" id="user_name" class="form-control" placeholder="Mario" maxlength="100" required>
-                </div>
+                </section>
                 <!-- SURNAME -->
-                <div class="mb-3">
+                <section class="mb-3">
                     <label for="user_surname" class="form-label text-common">Cognome</label>
                     <input type="text" name="surname" id="user_surname" class="form-control" placeholder="Rossi" maxlength="100" required>
-                </div>
+                </section>
                 <!-- EMAIL -->
-                <div class="mb-3">
+                <section class="mb-3">
                     <label for="user_email" class="form-label text-common">Email</label>
                     <input type="email" name="email" id="user_email" class="form-control" placeholder="mario.rossi@gmail.com" maxlength="128" required>
-                </div>
+                </section>
                 <!-- PASSWORD -->
-                <div class="">
+                <section>
                     <label for="user_password" class="form-label text-common">Password</label>
                     <input type="password" name="password" id="user_password" oninput="validatePassword(this.value)" class="form-control" maxlength="255" required>
-                </div>
-                <div class="form-text mb-3 text-common-dark">La password deve avere almeno 8 caratteri, di cui almeno uno alfanumerico, un carattere maiuscolo, un carattere minuscolo ed un carattere speciale #?!@$%^&*-</div>
+                </section>
+                <section class="form-text mb-3 text-common-dark">La password deve avere almeno 8 caratteri, di cui almeno uno alfanumerico, un carattere maiuscolo, un carattere minuscolo ed un carattere speciale #?!@$%^&*-</section>
                 <!-- VERIFY PASSWORD -->
-                <div class="mb-3">
+                <section class="mb-3">
                     <label for="user_password" class="form-label text-common">Conferma password</label>
                     <input type="password" name="verify_password" id="verify_user_password" class="form-control" maxlength="255" required>
-                </div>
+                </section>
                 <!-- USER TYPE -->
-                <div class="mb-3">
+                <section class="mb-3">
                     <label for="user_type" class="form-label text-common">Tipologia Utente</label>
                     <select name="type" id="user_type" class="form-select">
                         <option value="1">Partecipante</option>
                         <option value="2">Collaboratore</option>
                     </select>
-                </div>
+                </section>
                 <input type="submit" value="Registrati" class="btn">
             </form>
         </article>

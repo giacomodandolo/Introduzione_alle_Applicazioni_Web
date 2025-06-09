@@ -4,26 +4,26 @@
 {% block body_content %}
 <!-- CAROUSEL OF INFO -->
 <section id="infoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-    <figure class="carousel-inner rounded-4">
-        <article class="carousel-item active">
+    <article class="carousel-inner rounded-4">
+        <figure class="carousel-item active">
             <img src="{{ url_for('static', filename='doom_carousel.webp') }}" class="d-block w-100 carousel-image" alt="Doom: The Dark Ages">
             <figcaption class="carousel-caption w-90 px-3 m-auto rounded-5">
                 <h5><span class="text-secondary">Venerdì</span> rilascia la tua anima selvaggia con il metal!</h5>
             </figcaption>
-        </article>
-        <article class="carousel-item">
+        </figure>
+        <figure class="carousel-item">
             <img src="{{ url_for('static', filename='final_fantasy_carousel.webp') }}" class="d-block w-100" alt="Sephiroth VS Cloud Final Fantasy VII">   
             <figcaption class="carousel-caption w-90 px-3 m-auto rounded-5">
                 <h5><span class="text-secondary">Sabato</span> senti l'adrenalina aumentare con il rock!</h5>
             </figcaption>
-        </article>
-        <article class="carousel-item">
+        </figure>
+        <figure class="carousel-item">
             <img src="{{ url_for('static', filename='hollow_knight_carousel.webp') }}" class="d-block w-100" alt="Mantis Lords Hollow Knight">
             <figcaption class="carousel-caption w-90 px-3 m-auto rounded-5">
                 <h5><span class="text-secondary">Domenica</span> corona la tua esperienza con la musica classica!</h5>
             </figcaption>
-        </article>
-    </figure>
+        </figure>
+    </article>
     <button class="carousel-control-prev" type="button" data-bs-target="#infoCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -34,63 +34,65 @@
     </button>
 </section>
 
-<!-- ALBUM WITH ALL ARTISTS (WITH POSSIBLE FILTERS) -->
-    <form action="{{ url_for('homepage_post', method='POST') }}" method="POST" class="row bg-primary p-3 mb-3 rounded-3">
-    <div class="col-12 col-md-3">
-        <label for="date_filter" class="form-label text-common">Giorno</label>
-        <select name="date_filter" id="date_filter" class="form-select">
-            <option value="">Scegli un'opzione</option>
-            {% for date in p_dates %}
-                <option value="{{ date }}">{{ date.split('T')[0] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-12 col-md-3">
-        <label for="stage_filter" class="form-label text-common">Palco</label>
-        <select name="stage_filter" id="stage_filter" class="form-select">
-            <option value="" selected>Scegli un'opzione</option>
-            {% for stage in p_stages %}
-                <option value="{{ stage.id }}">{{ stage.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-12 col-md-3">
-        <label for="music_genre_filter" class="form-label text-common">Genere</label>
-        <select name="music_genre_filter" id="music_genre_filter" class="form-select">
-            <option value="">Scegli un'opzione</option>
-            {% for music_genre in p_music_genres %}
-                <option value="{{ music_genre.name }}">{{ music_genre.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-12 col-md-3 mt-3 d-flex">
-        <input type="submit" value="Filtra" class="btn text-end w-100 text-center ">
-    </div>
-</form>
-{% if p_performances %}
-    <section class="album p-2">
-        <div class="row">
-        {% for performance in p_performances %}
-            <a href="{{ url_for('artist', artist_id=performance.artist_id) }}" class="col-lg-3 mb-4 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
-                <article class="card rounded-4 bg-primary border-common mx-auto">
-                    <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.name }}">
-                    <section class="card-body d-flex flex-column">
-                        <h5 class="card-title text-primary">{{ performance.artist_name }}</h5>
-                        <p class="card-text text-common">{{ performance.short_description }}</p>
-                    </section>
-                    <section class="row d-flex align-items-center m-3 my-0">
-                        <span class="badge me-1 mb-1 bg-secondary text-black col-12">{{ performance.start_date.split('T')[0] }}</span>
-                        <span class="badge me-1 mb-1 bg-tertiary text-black col-12">{{ performance.start_date.split('T')[1] }} ({{ p_durations[performance.artist_id] }})</span>
-                    </section>
-                    <section class="row d-flex align-items-center m-3 mt-0">
-                        <span class="badge me-1 mb-1 bg-quaternary text-black col-12">{{ performance.stage_name }}</span>
-                        <span class="badge bg-quaternary text-black col-12">{{ performance.music_genre }}</span>
-                    </section>
-                </article>
-            </a>
-        {% endfor %}
-        </div>   
+<!-- FILTERS FOR ARTISTS -->
+<form action="{{ url_for('homepage_post', method='POST') }}" method="POST">
+    <section class="row bg-primary p-3 mb-3 rounded-3">
+        <article class="col-12 col-md-3">
+            <label for="date_filter" class="form-label text-common">Giorno</label>
+            <select name="date_filter" id="date_filter" class="form-select">
+                <option value="">Scegli un'opzione</option>
+                {% for date in p_dates %}
+                    <option value="{{ date }}">{{ date.split('T')[0] }}</option>
+                {% endfor %}
+            </select>
+        </article>
+        <article class="col-12 col-md-3">
+            <label for="stage_filter" class="form-label text-common">Palco</label>
+            <select name="stage_filter" id="stage_filter" class="form-select">
+                <option value="" selected>Scegli un'opzione</option>
+                {% for stage in p_stages %}
+                    <option value="{{ stage.id }}">{{ stage.name }}</option>
+                {% endfor %}
+            </select>
+        </article>
+        <article class="col-12 col-md-3">
+            <label for="music_genre_filter" class="form-label text-common">Genere</label>
+            <select name="music_genre_filter" id="music_genre_filter" class="form-select">
+                <option value="">Scegli un'opzione</option>
+                {% for music_genre in p_music_genres %}
+                    <option value="{{ music_genre.name }}">{{ music_genre.name }}</option>
+                {% endfor %}
+            </select>
+        </article>
+        <article class="col-12 col-md-3 mt-3 d-flex">
+            <input type="submit" value="Filtra" class="btn text-end w-100 text-center ">
+        </article>
     </section>
+</form>
+
+<!-- ALBUM WITH ALL ARTISTS -->
+{% if p_performances %}
+<section class="album p-2 row">
+    {% for performance in p_performances %}
+    <a href="{{ url_for('artist', artist_id=performance.artist_id) }}" class="col-lg-3 mb-4 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
+        <figure class="card rounded-4 bg-primary border-common mx-auto">
+            <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.name }}">
+            <article class="card-body d-flex flex-column">
+                <h5 class="card-title text-primary">{{ performance.artist_name }}</h5>
+                <p class="card-text text-common">{{ performance.short_description }}</p>
+            </article>
+            <article class="row d-flex align-items-center m-3 my-0">
+                <time class="badge me-1 mb-1 bg-secondary text-black col-12">{{ performance.start_date.split('T')[0] }}</time>
+                <time class="badge me-1 mb-1 bg-tertiary text-black col-12">{{ performance.start_date.split('T')[1] }} ({{ p_durations[performance.artist_id] }})</time>
+            </article>
+            <article class="row d-flex align-items-center m-3 mt-0">
+                <span class="badge me-1 mb-1 bg-quaternary text-black col-12">{{ performance.stage_name }}</span>
+                <span class="badge bg-quaternary text-black col-12">{{ performance.music_genre }}</span>
+            </article>
+        </figure>
+    </a>
+    {% endfor %}
+</section>
 {% endif %}
       
 {% endblock body_content %}

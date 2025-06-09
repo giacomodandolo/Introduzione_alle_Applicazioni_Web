@@ -1,42 +1,61 @@
 {% extends "base.html" %}
-{% block title %} {{ p_performance.nome }} {% endblock title %}
+{% block title %} {{ p_performance.artist_name }} {% endblock title %}
 
 {% block body_content %}
-
-<main class="h-100 gradient-custom-2">
-    <div class="container pb-3 h-100">
-        <div class="row d-flex justify-content-center">
-            <div class="col col-lg-9 col-xl-8">
-                <div class="card rounded-4 d-flex">
-                    <article class="rounded-top-4 text-white d-flex flex-row bg-primary">
-                        <div class="ms-4 mt-5 d-flex flex-column artist-img-sm">
-                            <img src="{{ url_for('static', filename=p_performance.artist_image) }}"
-                            alt="{{ p_performance.artist_name }}" class="border rounded-3 mt-4 mb-2">
-                        </div>
-                        <section class="ms-3 artist-name h-100 mt-auto mb-3">
-                            <h4 class="text-common">{{ p_performance.artist_name }}</h4>
-                            <section>
-                                <span class="badge mb-1 mb-sm-0 me-1 bg-secondary text-black">{{ p_performance.start_date.split("T")[0] }}</span>
-                                <span class="badge mb-1 mb-sm-0 bg-tertiary text-black">{{ p_performance.start_date.split("T")[1] }} ({{ p_duration }})</span>
-                                <span class="badge mb-3 mb-sm-0 bg-quaternary text-black">{{ p_performance.stage_name }}</span>
-                            </section>
-                        </section>
-                    </article>
-                    <article class="card-body p-4 pb-2 text-black">
-                        <section class="my-2 text-body">
-                            <div class="p-4 bg-common rounded-3">
-                                <p class="font-italic mb-1">{{ p_performance.artist_description }}</p>
-                                <p class="font-italic mb-1">{{ p_performance.performance_description }}</p>
-                            </div>
-                        </section>
-                        <figure class="col">
-                            <img src="{{ url_for('static', filename=p_performance.performance_image) }}" alt="" class="w-100 rounded-3">
-                        </figure>
-                    </article>
+<!-- ARTIST -->
+<section class="row d-flex justify-content-center mb-3">
+    <article class="col col-lg-9 col-xl-8">
+        <div class="card rounded-4 d-flex bg-common">
+            <article class="card rounded-top-4 text-white d-flex flex-row bg-primary">
+                <figure class="ms-4 mt-5 d-flex flex-column artist-img-sm">
+                    <img src="{{ url_for('static', filename=p_performance.artist_image) }}"
+                    alt="{{ p_performance.artist_name }}" class="border rounded-3 mt-4 mb-2">
+                </figure>
+                <div class="ms-3 artist-name h-100 mt-auto mb-3">
+                    <h4 class="text-common">{{ p_performance.artist_name }}</h4>
+                    <span class="badge mb-1 mb-sm-0 me-1 bg-secondary text-black">{{ p_performance.start_date.split("T")[0] }}</span>
+                    <span class="badge mb-1 mb-sm-0 bg-tertiary text-black">{{ p_performance.start_date.split("T")[1] }} ({{ p_duration }})</span>
+                    <span class="badge mb-3 mb-sm-0 bg-quaternary text-black">{{ p_performance.stage_name }}</span>
                 </div>
-            </div>
+            </article>
+            <article class="card-body p-4 pb-2 text-black my-2 text-body">
+                <p class="font-italic mb-1">{{ p_performance.artist_description }}</p>
+            </article>
         </div>
-    </div>
-</main>
+    </article>
+</section>
 
+<!-- PERFORMANCE -->
+<section class="row d-flex justify-content-center mb-3">
+    <article class="col col-lg-9 col-xl-8">
+        <div class="card rounded-4 d-flex bg-common">        
+            <article class="card-body p-4 pb-2 text-black">
+                <h3 class="text-primary text-center">Performance</h3>
+                <div class="my-2 text-body">
+                    <p class="font-italic mb-1">{{ p_performance.performance_description }}</p>
+                </div> 
+                <figure class="col">
+                    <img src="{{ url_for('static', filename=p_performance.performance_image) }}" alt="" class="w-100 rounded-3">
+                </figure>
+            </article>
+        </div>
+    </article>
+</section>
+
+<!-- STAGE -->
+<section class="row d-flex justify-content-center mb-3">
+    <article class="col col-lg-9 col-xl-8">
+        <div class="card rounded-4 d-flex bg-common">        
+            <article class="card-body p-4 pb-2 text-black">
+                <h3 class="text-primary text-center">Palco {{ p_performance.stage_name }}</h3>
+                <div class="my-2 text-body">
+                    <p class="font-italic mb-1">{{ p_performance.stage_description }}</p>
+                </div> 
+                <figure class="col">
+                    <img src="{{ url_for('static', filename=p_performance.stage_image) }}" alt="" class="w-100 rounded-3">
+                </figure>
+            </article>
+        </div>
+    </article>
+</section>
 {% endblock body_content %}

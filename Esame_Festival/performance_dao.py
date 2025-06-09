@@ -176,7 +176,7 @@ def get_performance_from_artist(artist_id):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT start_date, end_date, performance.description as performance_description, performance.image as performance_image, music_genre, published, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, short_description, artist.description as artist_description, artist.image as artist_image, user_id FROM performance, stage, artist WHERE stage_id = stage.id AND artist_id = artist.id AND artist_id=?'
+    sql = 'SELECT start_date, end_date, performance.description as performance_description, performance.image as performance_image, music_genre, published, stage_id, stage.name as stage_name, stage.description as stage_description, stage.image as stage_image, artist_id, artist.name as artist_name, short_description, artist.description as artist_description, artist.image as artist_image, user_id FROM performance, stage, artist WHERE stage_id = stage.id AND artist_id = artist.id AND artist_id=?'
     cursor.execute(sql, (artist_id,))
     performance = cursor.fetchone()
 
@@ -253,7 +253,6 @@ def get_published_performances_filter(filters):
                     filter_statement += "AND " + filter_names[i] + "='" + filters[i] + "' "
 
     sql = f'SELECT performance.id as performance_id, performance.description, music_genre, short_description, artist.image as artist_image, start_date, end_date, stage_id, stage.name as stage_name, artist_id, artist.name as artist_name, user_id FROM performance, stage, artist WHERE published = 1 AND stage_id = stage.id AND artist_id = artist.id {filter_statement}ORDER BY start_date'
-    print(sql)
     cursor.execute(sql) 
     performances = cursor.fetchall()
 
