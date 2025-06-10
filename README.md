@@ -2,11 +2,14 @@
 Creato da Dandolo Giacomo, con matricola S296525.
 
 ## Descrizione del progetto
+Si noti come l'applicazione risulta essere completamente responsive.
+
+### I - Base
 Nell'header, presente all'interno di ogni pagina, sarà possibile cliccare sul logo del festival per tornare alla homepage.
 
 Nel footer sarà presente il nome della compagnia (fittizia) che gestisce il festival e, all'estrema destra, il logo di Spotify, che permette di aprire una playlist contenente ogni brano che sarà riprodotto all'interno del festival.
 
-### I - Homepage
+### II - Homepage
 All'interno della homepage è presente un carosello, che mostra i temi delle varie giornate, rispettivamente:
 - venerdì: musica metal;
 - sabato: musica rock;
@@ -16,15 +19,15 @@ Successivamente, sarà presente una barra che permette di filtrare le performanc
 
 Ogni scheda dell'artista potrà essere cliccata, in modo da vedere le informazioni riguardanti l'artista, la performance e il palco associato alla performance.
 
-### II - Registrazione
+### III - Registrazione
 All'interno della pagina di registrazione è possibile inserire le proprie informazioni, in modo da registrarsi. Si può definire la tipologia di utente con cui registrarsi, che può essere "Partecipante" o "Organizzatore".
 
-### III - Login
+### IV - Login
 All'interno della pagina di login è possibile effettuare il login con delle credenziali utilizzate per registrarsi precedentemente nella pagina di registrazione.
 
 Successivamente al login, è possibile effettuare il logout in qualsiasi momento attraverso il rispettivo pulsante.
 
-### IV - Profilo
+### V - Profilo
 Il profilo permette di vedere le informazioni riguardanti l'utente attualmente loggato, per cui si evidenzia anche il tipo di utente.
 
 In base al tipo di utente, si possono vedere informazioni differenti:
@@ -39,7 +42,7 @@ In base al tipo di utente, si possono vedere informazioni differenti:
 
 Nel caso dell'organizzatore, cliccando sulla performance non pubblicata è possibile andare sull'artista in bozza, verificando le sue informazioni che, cliccando sul pulsante di modifica, è possibile aggiornare.
 
-### V - Performance
+### VI - Performance
 All'interno della pagina della performance è possibile inserire tutte le informazioni necessarie, comprendendo le informazioni dell'artista e della rispettiva performance. Inoltre, è possibile evidenziare l'inserimento della performance come bozza, in modo da non pubblicarla nella homepage, ma mantenerla come non pubblicata per il collaboratore che la sta inserendo.
 
 Si deve notare come, per evitare inconsistenze all'interno degli orari, una performance che tenta di essere pubblicata con sovrapposizioni degli orari viene impostata automaticamente cancellata. 
@@ -53,7 +56,7 @@ Per renderle univoche all'interno della cartella ```static``` si è utilizzato i
 <nome_artista>_<timestamp>.<estensione>
 ```
 
-### VI - Biglietti
+### VII - Biglietti
 All'interno della pagina per l'acquisto dei biglietti è possibile acquistare una delle tre tipologie:
 - biglietto singolo: seleziona un singolo giorno del festival;
 - biglietto doppio: seleziona un intervallo di due giorni del festival;
