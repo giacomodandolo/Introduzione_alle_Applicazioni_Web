@@ -62,9 +62,9 @@
         {% else %}
         <!-- UPDATE PERFORMANCE -->
         <h2 class="card-header text-center text-primary border-common">Aggiornamento della performance</h2>
-        <form action="{{ url_for('update_performance', artist_id=p_performance.artist_id, method='POST')}}" class="card-body" method="POST">
+        <form action="{{ url_for('update_performance', artist_id=p_performance.artist_id, method='POST')}}" class="card-body" method="POST" enctype="multipart/form-data">
             <!-- ARTIST -->
-            <section class="h-100 border-bottom mb-4">
+            <section class="h-100 border-bottom mb-4 pb-3">
                 <h3 class="text-secondary border-common">Informazioni dell'artista</h3>
                 <!-- NAME -->
                 <label for="artist_name" class="form-label text-common">Nome</label>
@@ -75,9 +75,13 @@
                 <!-- DESCRIPTION -->
                 <label for="artist_description" class="form-label text-common">Descrizione</label>
                 <textarea name="artist_description" id="artist_description" class="form-control mb-3" placeholder="Lunga descrizione dell'artista" maxlength="512" rows="4" required>{{ p_performance.artist_description }}</textarea>
+                <!-- IMAGE -->
+                <label for="artist_image_id" class="form-label text-common">Immagine</label>
+                <input type="file" name="artist_image" id="artist_image_id" class="form-control">
+                <span class="form-text text-common-dark">L'immagine deve essere in formato jpg, jpeg, png o webp</span>
             </section>
             <!-- PERFORMANCE -->
-            <section class="h-100 border-bottom mb-4">
+            <section class="h-100 border-bottom mb-4 pb-3">
                 <h3 class="text-secondary border-common">Informazioni della performance</h3>
                 <!-- START -->
                 <label for="performance_start_date" class="form-label text-common">Data inizio</label>
@@ -99,10 +103,14 @@
                 <!-- DESCRIPTION -->
                 <label for="performance_description" class="form-label text-common">Descrizione</label>
                 <textarea name="performance_description" id="performance_description" class="form-control mb-3" placeholder="Lunga descrizione della performance" maxlength="512" rows="4" required>{{ p_performance.performance_description }}</textarea>
+                <!-- IMAGE -->
+                <label for="performance_image_id" class="form-label text-common">Immagine</label>
+                <input type="file" name="performance_image" id="performance_image_id" class="form-control">
+                <div class="form-text text-common-dark">L'immagine deve essere in formato jpg, jpeg, png o webp</div>
                 <!-- DRAFT -->
                 <div class="form-check">
                     <label for="draft_box" class="form-label text-common">Bozza</label>
-                    <input class="form-check-input mb-3" type="checkbox" name="draft_box" value="0" id="draft_box" checked>
+                    <input class="form-check-input" type="checkbox" name="draft_box" value="0" id="draft_box" checked>
                 </div>
             </section>
             <input type="submit" name="submitBtn" value="Aggiorna performance" class="btn">

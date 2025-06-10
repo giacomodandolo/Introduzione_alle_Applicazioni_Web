@@ -124,15 +124,15 @@ def update_performance(performance_form, artist_id, overlap):
     publish = 1
 
     success = False
-    sql_artist = 'UPDATE artist SET name=?, short_description=?, description=? WHERE id=?'
-    sql_performance = 'UPDATE performance SET start_date=?, end_date=?, music_genre=?, description=?, published=?, user_id=?, stage_id=? WHERE artist_id=?'
+    sql_artist = 'UPDATE artist SET name=?, short_description=?, description=?, image=? WHERE id=?'
+    sql_performance = 'UPDATE performance SET start_date=?, end_date=?, music_genre=?, description=?, image=?, published=?, user_id=?, stage_id=? WHERE artist_id=?'
 
     if "draft_box" in performance_form or overlap:
         publish = 0
 
     try:
-        cursor.execute(sql_artist, (performance_form["name"], performance_form["short_description"], performance_form["artist_description"], artist_id))
-        cursor.execute(sql_performance, (performance_form["start_date"], performance_form["end_date"], performance_form["music_genre"], performance_form["performance_description"], publish, current_user.id, performance_form["stage"], artist_id))
+        cursor.execute(sql_artist, (performance_form["name"], performance_form["short_description"], performance_form["artist_description"], performance_form["artist_image"], artist_id))
+        cursor.execute(sql_performance, (performance_form["start_date"], performance_form["end_date"], performance_form["music_genre"], performance_form["performance_description"], performance_form["performance_image"], publish, current_user.id, performance_form["stage"], artist_id))
         conn.commit()
         success = True
     except Exception as e:

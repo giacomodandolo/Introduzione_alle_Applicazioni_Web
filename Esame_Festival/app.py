@@ -176,6 +176,10 @@ def artist(artist_id):
     performance = performance_dao.get_performance_from_artist(artist_id)
     duration = obtain_duration(performance)
     
+    if performance["published"] == 0:
+        if current_user.is_authenticated and current_user.type != 2 or not current_user.is_authenticated:
+            return homepage()
+    
     return render_template(
         "artist.html", 
         p_performance = performance,
@@ -461,43 +465,45 @@ def performance_post():
     timestamp = int(datetime.now().timestamp())
 
     img_artist = ""
-    artist_image = request.files["artist_image"]
-    if artist_image:
-        ext = artist_image.filename.split(".")[-1]
-        if ext not in ALLOWED_IMAGE_EXTENSIONS:
-            flash("Estensione dei file non permessa.", "danger")
-            return homepage()
-        
-        img = Image.open(artist_image)
+    if performance_form["artist_image"]:
+        artist_image = request.files["artist_image"]
+        if artist_image:
+            ext = artist_image.filename.split(".")[-1]
+            if ext not in ALLOWED_IMAGE_EXTENSIONS:
+                flash("Estensione dei file non permessa.", "danger")
+                return homepage()
+            
+            img = Image.open(artist_image)
 
-        # change dimensions of the image to PROFILE_IMG_HEIGHT x PROFILE_IMG_HEIGHT
-        width, height = img.size
-        new_width = PROFILE_IMG_HEIGHT * width / height
-        size = new_width, PROFILE_IMG_HEIGHT
-        img.thumbnail(size, Image.Resampling.LANCZOS)
-        left = new_width / 2 - PROFILE_IMG_HEIGHT / 2
-        top = 0
-        right = new_width / 2 + PROFILE_IMG_HEIGHT / 2
-        bottom = PROFILE_IMG_HEIGHT
-        img = img.crop((left, top, right, bottom))
-        
-        # change the name of the file and save it in the static folder
-        new_filename = performance_form.get("name").lower() + "_" + str(timestamp) + "." + ext
-        img.save("static/" + new_filename)
-        img_artist = new_filename
+            # change dimensions of the image to PROFILE_IMG_HEIGHT x PROFILE_IMG_HEIGHT
+            width, height = img.size
+            new_width = PROFILE_IMG_HEIGHT * width / height
+            size = new_width, PROFILE_IMG_HEIGHT
+            img.thumbnail(size, Image.Resampling.LANCZOS)
+            left = new_width / 2 - PROFILE_IMG_HEIGHT / 2
+            top = 0
+            right = new_width / 2 + PROFILE_IMG_HEIGHT / 2
+            bottom = PROFILE_IMG_HEIGHT
+            img = img.crop((left, top, right, bottom))
+            
+            # change the name of the file and save it in the static folder
+            new_filename = performance_form.get("name").lower() + "_" + str(timestamp) + "." + ext
+            img.save("static/" + new_filename)
+            img_artist = new_filename
 
     img_performance = ""
-    performance_image = request.files["performance_image"]
-    if performance_image:
-        ext = performance_image.filename.split(".")[-1]
-        if ext not in ALLOWED_IMAGE_EXTENSIONS:
-            flash("Estensione dei file non permessa.", "danger")
-            return homepage()
-        
-        img = Image.open(performance_image)
-        new_filename = performance_form.get("name").lower() + "_performance_" + str(timestamp) + "." + ext
-        img.save("static/" + new_filename)
-        img_performance = new_filename
+    if performance_form["performance_image"]:
+        performance_image = request.files["performance_image"]
+        if performance_image:
+            ext = performance_image.filename.split(".")[-1]
+            if ext not in ALLOWED_IMAGE_EXTENSIONS:
+                flash("Estensione dei file non permessa.", "danger")
+                return homepage()
+            
+            img = Image.open(performance_image)
+            new_filename = performance_form.get("name").lower() + "_performance_" + str(timestamp) + "." + ext
+            img.save("static/" + new_filename)
+            img_performance = new_filename
 
     performance_form["artist_image"] = img_artist
     performance_form["performance_image"] = img_performance
@@ -558,6 +564,11 @@ def update_performance_post(artist_id):
     
     performance_form = request.form.to_dict()
     performances_db = performance_dao.get_performances()
+    
+    if not performances_db:
+        return homepage()
+    
+    artist_db = performance_dao.get_artist(artist_id)
     overlap = False
 
     for performance_db in performances_db:
@@ -565,14 +576,60 @@ def update_performance_post(artist_id):
             overlap = True
             break
     
-    success = performance_dao.update_performance(performance_form, artist_id, overlap)
+    timestamp = int(datetime.now().timestamp())
+
+    img_artist = artist_db["image"]
+    artist_image = request.files["artist_image"]
+    if artist_image:
+        ext = artist_image.filename.split(".")[-1]
+        if ext not in ALLOWED_IMAGE_EXTENSIONS:
+            flash("Estensione dei file non permessa.", "danger")
+            return homepage()
+        
+        img = Image.open(artist_image)
+
+        # change dimensions of the image to PROFILE_IMG_HEIGHT x PROFILE_IMG_HEIGHT
+        width, height = img.size
+        new_width = PROFILE_IMG_HEIGHT * width / height
+        size = new_width, PROFILE_IMG_HEIGHT
+        img.thumbnail(size, Image.Resampling.LANCZOS)
+        left = new_width / 2 - PROFILE_IMG_HEIGHT / 2
+        top = 0
+        right = new_width / 2 + PROFILE_IMG_HEIGHT / 2
+        bottom = PROFILE_IMG_HEIGHT
+        img = img.crop((left, top, right, bottom))
+        
+        # change the name of the file and save it in the static folder
+        new_filename = performance_form.get("name").lower() + "_" + str(timestamp) + "." + ext
+        os.remove("static/" + img_artist)
+        img.save("static/" + new_filename)
+        img_artist = new_filename
+
+    img_performance = performance_db["image"]
+    performance_image = request.files["performance_image"]
+    if performance_image:
+        ext = performance_image.filename.split(".")[-1]
+        if ext not in ALLOWED_IMAGE_EXTENSIONS:
+            flash("Estensione dei file non permessa.", "danger")
+            return homepage()
+        
+        img = Image.open(performance_image)
+        new_filename = performance_form.get("name").lower() + "_performance_" + str(timestamp) + "." + ext
+        os.remove("static/" + img_performance)
+        img.save("static/" + new_filename)
+        img_performance = new_filename
+
+    performance_form["artist_image"] = img_artist
+    performance_form["performance_image"] = img_performance
     
+    success = performance_dao.update_performance(performance_form, artist_id, overlap)
+        
     if success and overlap:
         flash("Performance in sovrapposizione con un'altra performance pubblicata.", "warning")
         return update_performance(artist_id)
     elif success:
         flash("Performance aggiornata correttamente.", "success")
-        return profile()
+        return artist(artist_id)
     else:
         flash("Errore nell'aggiornamento della performance: riprova!", "danger")
         return update_performance(artist_id)

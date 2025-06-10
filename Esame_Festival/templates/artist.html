@@ -7,9 +7,12 @@
     <article class="col col-lg-9 col-xl-8">
         <div class="card rounded-4 d-flex bg-common">
             <article class="card rounded-top-4 text-white d-flex flex-row bg-primary">
-                <figure class="ms-4 mt-5 d-flex flex-column artist-img-sm">
+                <figure class="ms-4 mt-4 d-flex flex-column artist-img-sm"> 
                     <img src="{{ url_for('static', filename=p_performance.artist_image) }}"
-                    alt="{{ p_performance.artist_name }}" class="border rounded-3 mt-4 mb-2">
+                    alt="{{ p_performance.artist_name }}" class="border rounded-3 mb-2">
+                    {% if current_user.type == 2 and p_performance.published == 0 %}
+                    <a href="{{ url_for('update_performance', artist_id=p_performance.artist_id) }}" class="btn col-12 me-2 mb-2 bg-primary">Modifica</a>
+                    {% endif %}
                 </figure>
                 <div class="ms-3 artist-name h-100 mt-auto mb-3">
                     <h4 class="text-common">{{ p_performance.artist_name }}</h4>

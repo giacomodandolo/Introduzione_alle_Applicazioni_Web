@@ -149,7 +149,7 @@
 <h2 class="text-primary text-center">Performance non pubblicate</h2>
 <section class="album p-2 row">
     {% for performance in p_unpublished_performances %}
-    <a href="{{ url_for('update_performance', artist_id=performance.artist_id) }}" class="col-lg-3 mb-3 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
+    <a href="{{ url_for('artist', artist_id=performance.artist_id) }}" class="col-lg-3 mb-3 d-flex align-items-stretch text-decoration-none card-interaction mh-50">
         <article class="card rounded-4 bg-primary border-common mx-auto">
             <img src="{{ url_for('static', filename=performance.artist_image) }}" class="card-img-top rounded-top-4 artist-img" alt="{{ performance.name }}">
             <section class="card-body">
