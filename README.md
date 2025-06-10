@@ -64,27 +64,27 @@ Si deve notare come l'acquisto del biglietto è possibile solo per i partecipant
 ## Credenziali disponibili
 Le seguenti credenziali saranno inserite mostrando il nome dell'utente, l'email con la quale è necessario eseguire il login e la relativa password.
 
-### Primo collaboratore
+### Primo Collaboratore
 primo.collaboratore@mail.com\
 Primo$Collaboratore1
 > Nota: sono presenti due performance non pubblicate.
 
-### Secondo collaboratore
+### Secondo Collaboratore
 secondo.collaboratore@mail.com\
 Secondo$Collaboratore2
 > Nota: è presente una performance non pubblicata.
 
-### Primo partecipante
+### Primo Partecipante
 primo.partecipante@mail.com\
 Primo$Partecipante1
 > Nota: è presente un biglietto singolo per il giorno 19/07/2025.
 
-### Secondo collaboratore
+### Secondo Partecipante
 secondo.partecipante@mail.com\
 Secondo$Partecipante2
 > Nota: è presente un biglietto doppio per l'intervallo di giorni 19/07/2025 - 20/07/2025.
 
-### Terzo collaboratore
+### Terzo Partecipante
 terzo.partecipante@mail.com\
 Terzo$Partecipante3
 > Nota: è presente un biglietto platino.
